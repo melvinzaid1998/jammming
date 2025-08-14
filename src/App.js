@@ -1,9 +1,10 @@
 
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import './App.css';
 import Playlist from './components/Playlist/Playlist';
 import Tracklist from './components/Tracklist/Tracklist'
 import Track from './components/Track/Track';
+import Spotify from './util/spotify'; 
 
 
 function App() {
@@ -26,6 +27,19 @@ function App() {
 
   const removeSongFromPlaylist = (song) => {
     setPlaylistTracks((prev) => prev.filter((track) => (track !== song)))
+  }
+
+  const [spotifyToken, setSpotifyToken] = useState('');
+
+  useEffect(() => {
+    const token = Spotify.getAccessToken(); 
+    if (token){
+      setSpotifyToken(token); 
+    }
+  }, []); 
+
+  if(!spotifyToken){
+    return <div>Loading...</div>;
   }
 
   return (
